@@ -1,128 +1,163 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Casino Tài Xỉu - Bản Mượt 100%</title>
+    <title>Casino-Luxury-V41-Full-Unlocked</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
     <style>
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
-        body { background: radial-gradient(circle, #8b0000 0%, #000 100%); color: #fff; font-family: sans-serif; margin: 0; padding: 0; overflow-x: hidden; }
-        #loginPanel, #gamePanel { width: 100%; max-width: 500px; margin: 0 auto; padding: 20px; }
-        h2 { font-size: 1.8rem; text-transform: uppercase; margin-bottom: 20px; color: #ffd700; text-align: center; }
-        input { width: 100%; padding: 14px; margin: 10px 0; border-radius: 10px; border: 1px solid #444; background: #1a1a1a; color: #fff; font-size: 16px; }
-        button { cursor: pointer; border-radius: 10px; border: none; font-weight: bold; transition: 0.2s; }
-        button:disabled { opacity: 0.5; cursor: not-allowed; }
-        #money { font-size: 40px; color: #4caf50; font-weight: bold; text-align: center; margin: 15px 0; }
-        #diceArea { display: flex; justify-content: center; gap: 15px; margin: 20px 0; }
-        .dice { width: 75px; height: 75px; background: #fff; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 40px; color: #000; box-shadow: 0 5px 15px #000; }
-        #chipArea { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin: 15px 0; }
-        .chip { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 3px solid #fff; font-size: 12px; }
-        .chip.selected { border: 4px solid #ffd700; transform: scale(1.2); box-shadow: 0 0 15px #ffd700; }
-        .chip.disabled { opacity: 0.2; pointer-events: none; }
-        .chip[data-value="1000"] { background: #4caf50; } .chip[data-value="1000000"] { background: #2196f3; }
-        .chip[data-value="5000000"] { background: #8e24aa; } .chip[data-value="10000000"] { background: #b71c1c; }
-        .action-btn { width: 48%; padding: 18px; font-size: 20px; color: #fff; margin-bottom: 15px; }
-        #btnRoll { width: 100%; padding: 20px; font-size: 22px; background: #ffd700; color: #000; margin-top: 10px; }
-        #adminPanel { margin-top: 40px; padding: 20px; background: rgba(0,0,0,0.9); border: 2px solid #ffd700; border-radius: 20px; display: none; }
-        .user-card { background: #262626; padding: 12px; margin: 8px 0; border-radius: 10px; font-size: 14px; border-left: 5px solid #ffd700; }
-        .lock-banner { background: #ff0000; color: #fff; padding: 12px; font-weight: bold; border-radius: 8px; margin-bottom: 15px; display: none; text-align: center; }
+        /* TỔNG THỂ LUXURY */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; -webkit-user-select: none; user-select: none; }
+        body { background: radial-gradient(circle, #4a0000 0%, #000 100%); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; padding: 0; overflow-x: hidden; height: 100vh; }
+        #loginPanel, #gamePanel, #loadingPanel { width: 100%; max-width: 500px; margin: 0 auto; padding: 15px; }
+
+        /* MÀN HÌNH CHỜ */
+        #loadingPanel { height: 100vh; display: flex; align-items: center; justify-content: center; flex-direction: column; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #000; z-index: 99999; }
+        .spinner { width: 40px; height: 40px; border: 4px solid #ffd70033; border-top: 4px solid #ffd700; border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* BANNER & THÔNG BÁO */
+        #lockBanner { background: #b71c1c; color: #fff; padding: 12px; text-align: center; font-weight: bold; border-radius: 10px; margin-bottom: 10px; display: none; border: 2px solid #fff; animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0.4; } }
+        .marquee-container { overflow: hidden; white-space: nowrap; padding: 8px 0; border-bottom: 1px solid rgba(255,215,0,0.1); margin-bottom: 10px; }
+        .marquee-text { display: inline-block; padding-left: 100%; animation: marquee 15s linear infinite; color: #ffd700; font-size: 13px; font-weight: bold; }
+        @keyframes marquee { 0% { transform: translate(0, 0); } 100% { transform: translate(-100%, 0); } }
+
+        /* GAME UI */
+        #money { font-size: 45px; color: #4caf50; font-weight: bold; text-align: center; margin: 10px 0; text-shadow: 0 0 15px rgba(76,175,80,0.6); }
+        .dice { width: 70px; height: 70px; background: #fff; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 38px; color: #000; box-shadow: 0 5px 15px #000; margin: 0 5px; }
+
+        /* 13 CHIP CƯỢC MÀU SẮC */
+        #chipArea { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 15px; }
+        .chip { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid #fff; font-size: 9px; transition: 0.2s; cursor: pointer; box-shadow: 0 3px 10px #000; }
+        .chip.selected { border: 3.5px solid #ffd700; transform: scale(1.15); box-shadow: 0 0 15px #ffd700; }
+        .chip.disabled { opacity: 0.15; filter: grayscale(1); pointer-events: none; }
+        .chip[data-value="1000"] { background: #4caf50; } .chip[data-value="2000"] { background: #8bc34a; } .chip[data-value="5000"] { background: #009688; }
+        .chip[data-value="10000"] { background: #ff9800; } .chip[data-value="100000"] { background: #795548; } .chip[data-value="500000"] { background: #e91e63; }
+        .chip[data-value="1000000"] { background: #2196f3; } .chip[data-value="2000000"] { background: #3f51b5; } .chip[data-value="5000000"] { background: #9c27b0; }
+        .chip[data-value="10000000"] { background: #b71c1c; } .chip[data-value="50000000"] { background: #fbc02d; color:#000; }
+        .chip[data-value="100000000"] { background: #00bcd4; } .chip[data-value="500000000"] { background: #eee; color:#000; }
+
+        /* ADMIN DASHBOARD FULL MONITOR */
+        #adminPanel { margin-top: 40px; padding: 20px; background: rgba(10, 10, 10, 0.98); border: 2px solid #ffd700; border-radius: 30px; display: none; }
+        .admin-card { background: rgba(255,255,255,0.04); border-radius: 15px; padding: 15px; margin-bottom: 15px; border: 1px solid rgba(255,215,0,0.15); }
+        .admin-title { color: #ffd700; font-size: 12px; text-transform: uppercase; margin-bottom: 12px; font-weight: bold; border-left: 4px solid #ffd700; padding-left: 10px; }
+        .admin-status { font-size: 13px; margin-bottom: 10px; color: #ccc; background: #000; padding: 8px; border-radius: 8px; }
+        .admin-status b { color: #ffd700; }
+        .admin-btn { padding: 12px; font-size: 11px; font-weight: bold; border-radius: 8px; flex: 1; color: #fff; border: none; cursor: pointer; margin: 2px; }
+        
+        #userList { max-height: 400px; overflow-y: auto; }
+        .user-item { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 12px; margin-bottom: 8px; }
+        .u-input { width: 80px; background: #000; border: 1px solid #444; color: #4caf50; padding: 8px; border-radius: 6px; font-size: 12px; }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
-<div id="loginPanel">
-    <h2>CASINO ONLINE</h2>
-    <input type="text" id="username" placeholder="Tên đăng nhập">
-    <input type="password" id="password" placeholder="Mật khẩu">
-    <button onclick="login()" style="width:100%; padding:16px; background:#ffd700; color:#000;">ĐĂNG NHẬP</button>
-    <button onclick="register()" style="width:100%; padding:12px; background:transparent; color:#888; margin-top:15px;">Đăng ký tài khoản</button>
+<div id="loadingPanel"><div class="spinner"></div><p style="color:#ffd700; margin-top:15px; font-weight:bold;">ĐANG BẢO MẬT...</p></div>
+
+<div id="loginPanel" style="display:none; height:100vh; align-items:center; justify-content:center;">
+    <div style="background:rgba(15,15,15,0.95); padding:35px; border-radius:30px; border:2px solid #ffd700; width:90%; text-align:center;">
+        <h2 style="color:#ffd700">ROYAL LOGIN</h2>
+        <input type="text" id="username" style="width:100%; padding:15px; margin-bottom:12px; border-radius:12px; background:#111; border:1px solid #ffd70033; color:#fff;" placeholder="Tên đăng nhập">
+        <input type="password" id="password" style="width:100%; padding:15px; margin-bottom:12px; border-radius:12px; background:#111; border:1px solid #ffd70033; color:#fff;" placeholder="Mật khẩu">
+        <button onclick="login()" style="width:100%; padding:18px; background:linear-gradient(#ffd700, #b8860b); border:none; border-radius:12px; font-weight:900; cursor:pointer;">VÀO SÒNG</button>
+        <button onclick="register()" style="background:none; border:none; color:#888; margin-top:15px; cursor:pointer;">Đăng ký nhận 1M$</button>
+    </div>
 </div>
 
 <div id="gamePanel" style="display:none;">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-        <span id="displayUserName" style="color:#ffd700; font-weight:bold;">👤 Tải dữ liệu...</span>
-        <button onclick="logout()" style="background:#333; color:#fff; padding:6px 12px; font-size:12px;">Thoát</button>
-    </div>
-    <div id="money">0</div>
-    <div id="lockBanner" class="lock-banner">⚠️ MÁY ĐANG BẢO TRÌ ⚠️</div>
-    <div id="diceArea">
-        <div id="dice1" class="dice">🎲</div><div id="dice2" class="dice">🎲</div><div id="dice3" class="dice">🎲</div>
-    </div>
-    <div id="resultText" style="text-align:center; font-weight:bold; height:35px; color:#ffd700; font-size:18px;">Mời đặt cược!</div>
+    <div id="lockBanner">⚠️ MÁY CHỦ ĐANG BẢO TRÌ ⚠️</div>
+    <div class="welcome-box"><div style="display:flex; justify-content:space-between; align-items:center;"><span id="displayWelcome">👤 Đang tải...</span><button onclick="logout()" style="background:#333; color:#fff; padding:6px 12px; border-radius:10px; border:none; font-size:10px;">Thoát</button></div></div>
+    <div id="money">0 $</div>
+    <div class="marquee-container"><div id="marqueeText" class="marquee-text">Chào mừng bạn đến với Luxury Casino!</div></div>
+    <div id="historyList" style="display:flex; justify-content:center; gap:5px; margin-bottom:15px; flex-wrap:wrap;"></div>
+    <div style="display:flex; justify-content:center; margin: 15px 0;"><div id="dice1" class="dice">🎲</div><div id="dice2" class="dice">🎲</div><div id="dice3" class="dice">🎲</div></div>
+    <div id="resultText" style="text-align:center; font-weight:bold; height: 30px; color: #ffd700;">Hôm nay bạn cược gì?</div>
+    
     <div id="chipArea">
-        <div class="chip" data-value="1000">1K</div><div class="chip" data-value="1000000">1M</div>
-        <div class="chip" data-value="5000000">5M</div><div class="chip" data-value="10000000">10M</div>
+        <div class="chip" data-value="1000">1K</div><div class="chip" data-value="2000">2K</div><div class="chip" data-value="5000">5K</div>
+        <div class="chip" data-value="10000">10K</div><div class="chip" data-value="100000">100K</div><div class="chip" data-value="500000">500K</div>
+        <div class="chip" data-value="1000000">1M</div><div class="chip" data-value="2000000">2M</div><div class="chip" data-value="5000000">5M</div>
+        <div class="chip" data-value="10000000">10M</div><div class="chip" data-value="50000000">50M</div><div class="chip" data-value="100000000">100M</div>
+        <div class="chip" data-value="500000000">500M</div>
     </div>
-    <div id="selectedBet" style="text-align:center; margin:15px; font-size:14px; background:rgba(255,255,255,0.05); padding:10px; border-radius:10px; color:#aaa;">Cược: 0 | Cửa: -</div>
-    <div style="display:flex; justify-content: space-between;">
-        <button onclick="chooseBet('Tài')" class="action-btn" style="background:#ff5722;">TÀI</button>
-        <button onclick="chooseBet('Xỉu')" class="action-btn" style="background:#2196f3;">XỈU</button>
-    </div>
-    <button id="btnRoll" onclick="rollDice()">QUAY THƯỞNG</button>
+    
+    <div style="display:flex; justify-content: space-between;"><button onclick="chooseBet('Tài')" style="width:48%; padding:15px; background:#ff5722; color:#fff; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">TÀI</button><button onclick="chooseBet('Xỉu')" style="width:48%; padding:15px; background:#2196f3; color:#fff; font-weight:bold; border-radius:10px; border:none; cursor:pointer;">XỈU</button></div>
+    <button id="btnRoll" onclick="rollDice()" style="width:100%; padding:22px; background:linear-gradient(#ffd700, #b8860b); color:#000; font-weight:900; border-radius:15px; border:none; margin-top:10px; cursor:pointer;">QUAY THƯỞNG</button>
 
     <div id="adminPanel">
-        <h3 style="color:#ffd700; text-align:center;">QUẢN TRỊ VIÊN</h3>
-        <div style="border-bottom: 1px solid #333; padding:10px 0;">
-            Máy: <span id="lockStatus" style="color:lime">MỞ</span><br>
-            <button onclick="adminToggleLock(true)" style="background:#d32f2f; color:#fff; padding:8px; margin-top:5px;">KHÓA</button>
-            <button onclick="adminToggleLock(false)" style="background:#388e3c; color:#fff; padding:8px; margin-top:5px;">MỞ</button>
-        </div>
-        <div style="border-bottom: 1px solid #333; padding:10px 0;">
-            Ép: <span id="forceStatus" style="color:cyan">TỰ NHIÊN</span><br>
-            <button onclick="setForce('Tài')" style="background:#ef6c00; padding:8px; margin-top:5px;">TÀI</button>
-            <button onclick="setForce('Xỉu')" style="background:#1565c0; padding:8px; margin-top:5px;">XỈU</button>
-            <button onclick="setForce(null)" style="background:#555; padding:8px; margin-top:5px;">HỦY</button>
-        </div>
-        <strong>DANH SÁCH USER:</strong>
-        <div id="userList" style="margin-top:10px; max-height:250px; overflow-y:auto;"></div>
+        <h2 style="color:#ffd700; text-align:center; font-size: 20px;">SUPER ADMIN CONTROL</h2>
+        
+        <div id="cardForce" class="admin-card" style="display:none;"><div class="admin-title">1. Ép kết quả (SAD)</div><div class="admin-status">Lệnh hiện tại: <b id="forceStatusDisplay">TỰ NHIÊN</b></div><div style="display:flex; gap:5px;"><button onclick="setForce('Tài')" class="admin-btn" style="background:#e65100;">TÀI</button><button onclick="setForce('Xỉu')" class="admin-btn" style="background:#0d47a1;">XỈU</button><button onclick="setForce(null)" class="admin-btn" style="background:#444;">HỦY</button></div></div>
+        
+        <div id="cardWinRate" class="admin-card" style="display:none;"><div class="admin-title">2. Tỉ lệ thắng (%)</div><div class="admin-status">Tỉ lệ hiện tại: <b id="winRateDisplay">--</b>%</div><div style="display:flex; gap:10px;"><input type="number" id="inputWinRate" style="flex:1; padding:12px; background:#000; color:#fff; border:1px solid #444; border-radius:8px;"><button onclick="adminSetWinRate()" style="background:#2e7d32; color:#fff; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">LƯU</button></div></div>
+        
+        <div id="cardServer" class="admin-card" style="display:none;"><div class="admin-title">3. Máy chủ & Thông báo (SAD)</div><div class="admin-status">Khóa cược: <b id="lockStatusDisplay">MỞ</b></div><div style="display:flex; gap:5px; margin-bottom:10px;"><button onclick="adminToggleLock(true)" class="admin-btn" style="background:#b71c1c;">KHÓA MÁY</button><button onclick="adminToggleLock(false)" class="admin-btn" style="background:#2e7d32;">MỞ MÁY</button></div><div class="admin-status">Thông báo hiện tại: <i id="noticeStatusDisplay" style="color:#aaa;">Đang tải...</i></div><input type="text" id="inputNotice" placeholder="Nhập thông báo mới..." style="width:100%; padding:12px; background:#000; color:#fff; border-radius:8px; border:none;"><button onclick="adminSetNotice()" class="admin-btn" style="background:#4caf50; width:100%; margin-top:5px;">CẬP NHẬT</button></div>
+        
+        <div id="cardUsers" class="admin-card" style="display:none;"><div class="admin-title">4. Quản lý người chơi (SAD)</div><div id="userList"></div></div>
     </div>
 </div>
 
 <script>
-// --- FIREBASE CONFIG ---
+// ANTI-F12
+document.onkeydown = function(e) { if(e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74)) || (e.ctrlKey && e.keyCode == 85)) return false; };
+
 const firebaseConfig = {
-    apiKey: "AIzaSyCbESIH8uq5Q6R45ehisGp-Lsh9xz_ejDk",
-    authDomain: "tx888-85658.firebaseapp.com",
-    databaseURL: "https://tx888-85658-default-rtdb.firebaseio.com",
-    projectId: "tx888-85658",
-    storageBucket: "tx888-85658.firebasestorage.app",
-    messagingSenderId: "246211516842",
-    appId: "1:246211516842:web:24a3598d54b037676c73d3"
+  apiKey: "AIzaSyCbESIH8uq5Q6R45ehisGp-Lsh9xz_ejDk",
+  authDomain: "tx888-85658.firebaseapp.com",
+  databaseURL: "https://tx888-85658-default-rtdb.firebaseio.com",
+  projectId: "tx888-85658",
+  storageBucket: "tx888-85658.firebasestorage.app",
+  messagingSenderId: "246211516842",
+  appId: "1:246211516842:web:24a3598d54b037676c73d3"
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database(), auth = firebase.auth();
+let userData = null, selectedAmount = 1000, selectedChoice = null, serverState = {}, isRolling = false;
 
-let userData = null, selectedAmount = 0, selectedChoice = null, serverState = {}, isRolling = false;
-const winRate = 0.2; // 20% thắng
-
-db.ref('server').on('value', s => { serverState = s.val() || {}; updateUI(); });
+// AUTO LOGIN
+auth.onAuthStateChanged((user) => {
+    document.getElementById("loadingPanel").style.display = "none";
+    if (user) loadUserData(user.uid);
+    else { document.getElementById("loginPanel").style.display = "flex"; document.getElementById("gamePanel").style.display = "none"; }
+});
 
 function login() {
-    const u = document.getElementById("username").value.trim().toLowerCase(), p = document.getElementById("password").value;
-    if(!u || !p) return;
-    auth.signInWithEmailAndPassword(u + "@casino.com", p).then(res => loadUserData(res.user.uid)).catch(() => alert("Sai thông tin!"));
+    const u = document.getElementById("username").value.trim().toLowerCase(), p = document.getElementById("password").value.trim();
+    if(!u || !p) return alert("Nhập đủ thông tin!");
+    auth.signInWithEmailAndPassword(u + "@casino.com", p).catch(() => alert("Sai mật khẩu!"));
 }
 
-function register() {
-    const u = document.getElementById("username").value.trim().toLowerCase(), p = document.getElementById("password").value;
+async function register() {
+    const u = document.getElementById("username").value.trim().toLowerCase(), p = document.getElementById("password").value.trim();
     if(u.length < 3) return alert("Tên quá ngắn!");
-    auth.createUserWithEmailAndPassword(u + "@casino.com", p).then(res => {
-        db.ref('users/' + res.user.uid).set({ username: u, money: 2000000, isAdmin: false });
-        alert("Đăng ký thành công!");
-    }).catch(() => alert("Tên đã tồn tại!"));
+    try {
+        const res = await auth.createUserWithEmailAndPassword(u + "@casino.com", p);
+        await db.ref('users/' + res.user.uid).set({ username: u, money: 1000000, isAdmin: false, isSuperAdmin: false });
+        alert("Đăng ký thành công! Nhận 1.000.000$");
+    } catch (e) { alert("Lỗi: " + e.message); }
 }
 
 function loadUserData(uid) {
-    db.ref('users/' + uid).on('value', s => {
+    db.ref('users/' + uid).on('value', (s) => {
         userData = s.val(); if(!userData) return;
         userData.uid = uid;
         document.getElementById("loginPanel").style.display = "none";
         document.getElementById("gamePanel").style.display = "block";
-        document.getElementById("displayUserName").innerText = "👤 " + userData.username + (userData.isAdmin ? " (Admin)" : "");
-        if(userData.isAdmin) { document.getElementById("adminPanel").style.display = "block"; loadAllUsers(); }
+        document.getElementById("displayWelcome").innerText = `👤 Chào mừng ${userData.username}`;
+        
+        if(userData.isAdmin || userData.isSuperAdmin) {
+            document.getElementById("adminPanel").style.display = "block";
+            document.getElementById("cardWinRate").style.display = "block";
+            const isS = userData.isSuperAdmin ? "block" : "none";
+            document.getElementById("cardForce").style.display = isS;
+            document.getElementById("cardServer").style.display = isS;
+            document.getElementById("cardUsers").style.display = isS;
+            if(userData.isSuperAdmin) loadAllUsers();
+        }
         updateUI();
     });
 }
@@ -130,98 +165,112 @@ function loadUserData(uid) {
 function updateUI() {
     if(!userData) return;
     document.getElementById("money").innerText = userData.money.toLocaleString() + " $";
-    document.getElementById("selectedBet").innerText = `Cược: ${selectedAmount.toLocaleString()} | Cửa: ${selectedChoice || "-"}`;
-    document.getElementById("lockBanner").style.display = serverState.isLocked ? "block" : "none";
-    document.getElementById("lockStatus").innerText = serverState.isLocked ? "KHÓA" : "MỞ";
-    document.getElementById("forceStatus").innerText = serverState.forcedResult || "TỰ NHIÊN";
-    if(!isRolling) {
-        document.getElementById("btnRoll").disabled = (serverState.isLocked && !userData.isAdmin);
-        document.querySelectorAll(".chip").forEach(c => {
-            if(userData.money < parseInt(c.dataset.value)) c.classList.add("disabled");
-            else c.classList.remove("disabled");
-        });
-    }
+    document.querySelectorAll(".chip").forEach(chip => {
+        if (userData.money < parseInt(chip.dataset.value)) chip.classList.add("disabled");
+        else chip.classList.remove("disabled");
+    });
 }
 
-document.querySelectorAll(".chip").forEach(c => {
-    c.onclick = function() {
-        selectedAmount = parseInt(this.dataset.value);
-        document.querySelectorAll(".chip").forEach(x => x.classList.remove("selected"));
-        this.classList.add("selected");
-        updateUI();
-    }
+// MONITOR CHO ADMIN
+db.ref('server').on('value', (s) => { 
+    serverState = s.val() || { winRate: 20, isLocked: false, notice: "Chào mừng!" }; 
+    document.getElementById("lockBanner").style.display = serverState.isLocked ? "block" : "none";
+    document.getElementById("marqueeText").innerText = serverState.notice;
+    
+    // Cập nhật Monitor
+    const wr = document.getElementById("winRateDisplay"); if(wr) wr.innerText = serverState.winRate;
+    const fs = document.getElementById("forceStatusDisplay"); if(fs) fs.innerText = serverState.forcedResult ? "ÉP " + serverState.forcedResult.toUpperCase() : "TỰ NHIÊN";
+    const ls = document.getElementById("lockStatusDisplay"); if(ls) ls.innerText = serverState.isLocked ? "ĐANG KHÓA" : "ĐANG MỞ";
+    const ns = document.getElementById("noticeStatusDisplay"); if(ns) ns.innerText = serverState.notice;
 });
 
-function chooseBet(c) { selectedChoice = c; updateUI(); }
+db.ref('history').limitToLast(15).on('value', (s) => {
+    let html = ""; const data = s.val();
+    if(data) Object.values(data).forEach(item => { html += `<div style="width:20px;height:20px;border-radius:50%;background:${item.res=='Tài'?'#ff5722':'#2196f3'};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:bold;border:1px solid #fff;">${item.res[0]}</div>`; });
+    document.getElementById("historyList").innerHTML = html;
+});
 
-function rollDice() {
-    if(isRolling) return;
-    if(!selectedChoice || selectedAmount <= 0) return alert("Vui lòng đặt cược!");
-    if(userData.money < selectedAmount) return alert("Không đủ tiền!");
-    
-    // Bắt đầu quay
-    isRolling = true;
-    const btn = document.getElementById("btnRoll");
-    btn.disabled = true; btn.innerText = "ĐANG LẮC...";
-    document.querySelectorAll(".chip").forEach(c => c.classList.add("disabled"));
-
-    // TÍNH TOÁN TRƯỚC ĐỂ FIX LAG
-    let d = [r(), r(), r()], sum = d[0]+d[1]+d[2], res = sum >= 11 ? "Tài" : "Xỉu";
-    if(serverState.forcedResult) {
-        while(res !== serverState.forcedResult) { d=[r(),r(),r()]; sum=d[0]+d[1]+d[2]; res=sum>=11?"Tài":"Xỉu"; }
-    } else if(Math.random() > winRate) { // Thua
-        while(res === selectedChoice) { d=[r(),r(),r()]; sum=d[0]+d[1]+d[2]; res=sum>=11?"Tài":"Xỉu"; }
-    } else { // Thắng
-        while(res !== selectedChoice) { d=[r(),r(),r()]; sum=d[0]+d[1]+d[2]; res=sum>=11?"Tài":"Xỉu"; }
-    }
-    animate(d, sum, res);
-}
-
-function r() { return Math.floor(Math.random() * 6) + 1; }
-
-function animate(dice, total, finalRes) {
-    let count = 0;
-    const resText = document.getElementById("resultText");
-    resText.innerText = "Đang lắc...";
-    let t = setInterval(() => {
-        document.getElementById("dice1").innerText = r(); document.getElementById("dice2").innerText = r(); document.getElementById("dice3").innerText = r();
-        if(count++ > 12) {
-            clearInterval(t);
-            document.getElementById("dice1").innerText = dice[0]; document.getElementById("dice2").innerText = dice[1]; document.getElementById("dice3").innerText = dice[2];
-            let win = (selectedChoice === finalRes);
-            let newMoney = win ? userData.money + selectedAmount : userData.money - selectedAmount;
-            
-            // LƯU DỮ LIỆU CHẠY NGẦM
-            db.ref('users/' + userData.uid).update({ money: Math.max(0, newMoney) }).then(() => {
-                isRolling = false;
-                const btn = document.getElementById("btnRoll");
-                btn.disabled = false; btn.innerText = "QUAY THƯỞNG";
-                resText.innerText = `KẾT QUẢ: ${finalRes} (${total})`;
-                resText.style.color = win ? "#4caf50" : "#f44336";
-                updateUI();
-            });
-        }
-    }, 60);
-}
-
-// ADMIN TOOLS
-function adminToggleLock(s) { db.ref('server').update({ isLocked: s }); }
-function setForce(f) { db.ref('server').update({ forcedResult: f }); }
 function loadAllUsers() {
-    db.ref('users').on('value', s => {
-        let html = ""; const data = s.val();
-        for(let id in data) {
-            html += `<div class="user-card"><strong>${data[id].username}</strong> | $: ${data[id].money.toLocaleString()}<br>
-            <button onclick="editM('${id}', 1000000)" style="background:green;color:white;padding:5px;margin-top:5px;">+1M</button>
-            <button onclick="tAdmin('${id}', ${data[id].isAdmin})" style="background:blue;color:white;padding:5px;">Admin: ${data[id].isAdmin}</button></div>`;
+    db.ref('users').on('value', (s) => {
+        let html = ""; const users = s.val();
+        for (let uid in users) {
+            const u = users[uid]; const isMe = (uid === userData.uid);
+            const b = u.isSuperAdmin ? `<span style="color:#ff0000;font-size:10px;font-weight:bold;">(SAD)</span>` : (u.isAdmin ? `<span style="color:#ffff00;font-size:10px;font-weight:bold;">(AD)</span>` : `<span style="color:#888;font-size:10px;">(Member)</span>`);
+            const mP = !u.isSuperAdmin ? `<button onclick="tAdmin('${uid}',${u.isAdmin})" style="background:blue;color:#fff;border:none;padding:10px;border-radius:8px;font-size:10px;">AD</button><button onclick="delU('${uid}','${u.username}')" style="background:#444;color:#fff;border:none;padding:10px;border-radius:8px;font-size:10px;">X</button>` : "";
+            html += `<div class="user-item"><div class="u-info"><b>${u.username} ${b} ${isMe?'(BẠN)':''}</b><span style="color:#4caf50;">${u.money.toLocaleString()} $</span></div>
+            <div style="display:flex; gap:5px; margin-top:10px;"><input type="number" id="amt_${uid}" class="u-input" placeholder="Tiền..."><button onclick="editM('${uid}',1)" style="background:green;color:#fff;border:none;padding:10px;border-radius:8px;">+</button><button onclick="editM('${uid}',-1)" style="background:red;color:#fff;border:none;padding:10px;border-radius:8px;">-</button>${mP}</div></div>`;
         }
         document.getElementById("userList").innerHTML = html;
     });
 }
-function editM(id, a) { db.ref('users/'+id+'/money').once('value', s => db.ref('users/'+id).update({ money: s.val() + a })); }
-function tAdmin(id, c) { if(id === userData.uid) return alert("Không thể tự hủy quyền Admin!"); db.ref('users/'+id).update({ isAdmin: !c }); }
+
+function editM(uid, type) {
+    const amt = parseInt(document.getElementById("amt_" + uid).value);
+    if(!amt || amt <= 0) return alert("Nhập số!");
+    db.ref('users/' + uid + '/money').once('value', s => {
+        let n = (type === 1) ? s.val() + amt : s.val() - amt;
+        db.ref('users/' + uid).update({ money: Math.max(0, n) });
+    });
+}
+
+// ADMIN TOOLS
+function adminSetWinRate() { 
+    const newVal = parseInt(document.getElementById("inputWinRate").value);
+    if(isNaN(newVal)) return alert("Vui lòng nhập số!");
+    db.ref('server').update({ winRate: newVal }).then(()=>alert("Đã lưu tỉ lệ thắng mới!")); 
+}
+function adminToggleLock(s) { db.ref('server').update({ isLocked: s }).then(()=>alert(s?"ĐÃ KHÓA":"ĐÃ MỞ")); }
+function setForce(f) { db.ref('server').update({ forcedResult: f }).then(()=>alert(f?"ĐÃ ÉP":"ĐÃ HỦY")); }
+function adminSetNotice() { db.ref('server').update({ notice: document.getElementById("inputNotice").value }).then(()=>alert("Đã đổi thông báo!")); }
+function tAdmin(uid, cur) { db.ref('users/' + uid).update({ isAdmin: !cur }); }
+function delU(uid, name) { if(confirm("Xóa " + name + "?")) db.ref('users/' + uid).remove(); }
 function logout() { auth.signOut().then(() => location.reload()); }
+function chooseBet(c) { if(!isRolling) { selectedChoice = c; document.getElementById("resultText").innerText = "Đã chọn: " + c; } }
+
+function rollDice() {
+    if(isRolling || !selectedChoice || userData.money < selectedAmount) return alert("Kiểm tra tiền cược!");
+    if(serverState.isLocked && !userData.isSuperAdmin) return alert("HỆ THỐNG ĐANG BẢO TRÌ!");
+    isRolling = true; document.getElementById("btnRoll").disabled = true;
+    userData.money -= selectedAmount; updateUI();
+    db.ref('users/' + userData.uid).update({ money: userData.money });
+    let d, sum, res, limit = 0;
+    const curWR = (serverState.winRate !== undefined) ? serverState.winRate / 100 : 0.2;
+    do {
+        d = [Math.floor(Math.random()*6)+1, Math.floor(Math.random()*6)+1, Math.floor(Math.random()*6)+1];
+        sum = d[0]+d[1]+d[2]; res = sum >= 11 ? "Tài" : "Xỉu"; limit++;
+        let cond = serverState.forcedResult ? (res === serverState.forcedResult) : (Math.random() < curWR ? res === selectedChoice : res !== selectedChoice);
+        if(cond || limit > 100) break;
+    } while(true);
+    animate(d, sum, res);
+}
+
+function animate(dice, total, finalRes) {
+    let count = 0;
+    let t = setInterval(() => {
+        document.getElementById("dice1").innerText = Math.floor(Math.random()*6)+1;
+        document.getElementById("dice2").innerText = Math.floor(Math.random()*6)+1;
+        document.getElementById("dice3").innerText = Math.floor(Math.random()*6)+1;
+        if(count++ > 12) {
+            clearInterval(t);
+            document.getElementById("dice1").innerText = dice[0]; document.getElementById("dice2").innerText = dice[1]; document.getElementById("dice3").innerText = dice[2];
+            let win = (selectedChoice === finalRes);
+            if(win) { userData.money += (selectedAmount * 2); db.ref('users/' + userData.uid).update({ money: userData.money }); }
+            updateUI();
+            document.getElementById("resultText").innerText = `KẾT QUẢ: ${finalRes} (${total})`;
+            document.getElementById("resultText").style.color = win ? "#4caf50" : "#f44336";
+            db.ref('history').push({ res: finalRes });
+            isRolling = false; document.getElementById("btnRoll").disabled = false;
+        }
+    }, 60);
+}
+document.querySelectorAll(".chip").forEach(chip => {
+    chip.onclick = function() {
+        if(isRolling || this.classList.contains("disabled")) return;
+        selectedAmount = parseInt(this.dataset.value);
+        document.querySelectorAll(".chip").forEach(c => c.classList.remove("selected"));
+        this.classList.add("selected");
+    };
+});
 </script>
 </body>
 </html>
-
